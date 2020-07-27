@@ -1,0 +1,76 @@
+﻿<Window x:Name="window_main" x:Class="FileWatchingProgram.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileWatchingProgram"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="552" Width="800" Closing="window_main_Closing">
+    <Grid Margin="0,0,2,-2" HorizontalAlignment="Right" Width="790" Height="513" VerticalAlignment="Bottom">
+        <TextBox x:Name="txtbox_DirectoryInput" HorizontalAlignment="Left" Height="24" Margin="28,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184" AllowDrop="False"/>
+        <TextBlock x:Name="txtblk_EnterADirectory" HorizontalAlignment="Left" Margin="28,83,0,0" TextWrapping="Wrap" Text="Enter a Directory:" VerticalAlignment="Top"/>
+        <Button x:Name="btn_Apply" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="400,103,0,0" Height="24" Click="btn_Apply_Click" Cursor="Hand" IsEnabled="False"/>
+        <TextBox x:Name="txtbox_ExtensionInput" HorizontalAlignment="Left" Height="24" Margin="282,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61"/>
+        <TextBlock x:Name="txtblk_Extension" HorizontalAlignment="Left" Margin="282,83,0,0" TextWrapping="Wrap" Text="Extension:" VerticalAlignment="Top"/>
+        <Menu x:Name="mnu_MainMenu" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="780" Margin="10,3,0,0">
+            <MenuItem x:Name="mnuitm_File" Header="_File" Height="28" Width="31" Click="mnuitm_File_Click">
+                <MenuItem x:Name="mnuitm_Start" Header="Start" HorizontalAlignment="Left" Height="18" Width="230" Margin="27,0,-145,0" Click="mnuitm_Start_Click" VerticalAlignment="Center"/>
+                <MenuItem x:Name="mnuitm_Stop" Header="Stop" HorizontalAlignment="Left" Height="20" Width="230" Margin="27,0,-117,0" Click="mnuitm_Stop_Click" VerticalAlignment="Center"/>
+                <MenuItem x:Name="mnuitm_Query" Header="Query Database" HorizontalAlignment="Left" Height="18" Width="230" VerticalAlignment="Center" Margin="0,0,-90,0" Click="tlbr_OpenDatabase_Click"/>
+                <MenuItem x:Name="mnuitm_Close" Header="Close" Height="18" Width="230" Click="mnuitm_Close_Click" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,-90,0"/>
+            </MenuItem>
+            <MenuItem x:Name="mnuitm_Edit" Header="_Edit" Height="28" Width="36" Click="mnuitm_Edit_Click"/>
+            <MenuItem x:Name="mnuitm_Help" Header="_Help" Height="28" Width="39" Click="mnuitm_Help_Click">
+                <MenuItem x:Name="mnuitm_About" Header="About" HorizontalAlignment="Left" Height="18" Width="141" Margin="0,0,-1,0" Click="mnuitm_About_Click"/>
+                <MenuItem x:Name="mnuitm_Shortcuts" Header="Shortcuts" HorizontalAlignment="Left" Height="18" Width="140" Click="mnuitm_Shortcuts_Click"/>
+            </MenuItem>
+        </Menu>
+        <Rectangle Fill="#FFE6E6E6" HorizontalAlignment="Left" Height="52" Margin="10,83,0,0" Stroke="White" VerticalAlignment="Top" Width="489" Panel.ZIndex="-1"/>
+        <Rectangle Fill="#FFE6E6E6" HorizontalAlignment="Left" Height="304" Margin="10,191,0,0" Stroke="White" VerticalAlignment="Top" Width="770" Panel.ZIndex="-1"/>
+        <Button x:Name="btn_Start" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="29,202,0,0" Cursor="Hand" Click="mnuitm_Start_Click" IsEnabled="False"/>
+        <Button x:Name="btn_Stop" Content="Stop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="137,202,0,0" Cursor="Hand" IsEnabled="False" Click="mnuitm_Stop_Click"/>
+        <TextBlock x:Name="txtblk_Status" HorizontalAlignment="Left" Margin="29,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="470"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="235" Margin="29,241,0,0" VerticalAlignment="Top" Width="732" GridLinesVisibility="Horizontal" AutoGenerateColumns="False" SourceUpdated="dataGrid_SourceUpdated">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding FileName}" ClipboardContentBinding="{x:Null}" Header="File Name" MinWidth="100"/>
+                <DataGridTextColumn Binding="{Binding Extension}" ClipboardContentBinding="{x:Null}" Header="Extension" MinWidth="30"/>
+                <DataGridTextColumn Binding="{Binding Path}" ClipboardContentBinding="{x:Null}" Header="Path" MinWidth="315"/>
+                <DataGridTextColumn Binding="{Binding Event}" ClipboardContentBinding="{x:Null}" Header="Event" MinWidth="100"/>
+                <DataGridTextColumn Binding="{Binding DateAndTime}" ClipboardContentBinding="{x:Null}" Header="Date/Time" MinWidth="150"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ToolBar HorizontalAlignment="Left" Height="47" Margin="10,31,0,0" VerticalAlignment="Top" Width="780" Background="#FFF0F0F0">
+            <Button x:Name="tlbr_startbtn" Height="15" Width="15" Click="mnuitm_Start_Click" Margin="10,0" ToolTip="Begin the file watch" IsEnabled="False">
+                <Button.Background>
+                    <ImageBrush ImageSource="Start.png"/>
+                </Button.Background>
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#FF1C4859" Opacity="0.4" ShadowDepth="2"/>
+                </Button.Effect>
+            </Button>
+            <Button x:Name="tlbr_stopbtn" Height="15" Width="15" Margin="10,0" ToolTip="End the file watch" IsEnabled="False">
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="2" Opacity="0.4" ShadowDepth="2"/>
+                </Button.Effect>
+                <Button.Background>
+                    <ImageBrush ImageSource="Stop.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+            <Separator/>
+            <Button x:Name="tlbr_OpenDatabase" Click="tlbr_OpenDatabase_Click" ToolTip="Opens the database window" Margin="0,10" Width="116">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Database.png"/>
+                    <TextBlock Text="  Database View"/>
+                </StackPanel>
+            </Button>
+            <Separator/>
+            <Button x:Name="tlbr_exitbtn" Height="27" Margin="0,10,0,5" Width="59" Click="tlbr_exitbtn_Click" ToolTip="Exit the program" RenderTransformOrigin="2.565,1.324">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Exit.png"/>
+                    <TextBlock Text="  Exit "/>
+                </StackPanel>
+            </Button>
+        </ToolBar>
+        <Button x:Name="btn_commit" Content="Commit to Database" HorizontalAlignment="Left" Margin="607,202,0,0" VerticalAlignment="Top" Width="154" IsEnabled="False" Background="{x:Null}" Click="btn_commit_Click" ToolTip="Commit current results to database"/>
+    </Grid>
+</Window>
